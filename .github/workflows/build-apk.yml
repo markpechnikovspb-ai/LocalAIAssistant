@@ -27,16 +27,21 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Install Android SDK
+        run: |
+          sdkmanager "platform-tools"
+          sdkmanager "platforms;android-35"
+          sdkmanager "build-tools;35.0.0"
+
       - name: Install Gradle
-  uses: gradle/actions/setup-gradle@v4
-  with:
-    gradle-version: '8.10'
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10'
 
-- name: Build APK
-  run: |
-    gradle :app:assembleDebug --no-daemon
+      - name: Build APK
+        run: |
+          gradle :app:assembleDebug --no-daemon
 
-    
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
