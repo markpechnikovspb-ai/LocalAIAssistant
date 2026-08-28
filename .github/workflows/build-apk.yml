@@ -13,6 +13,9 @@ jobs:
     permissions:
       contents: read
 
+    env:
+      NDK_VERSION: "29.0.14206865"
+
     steps:
 
       - name: Checkout
@@ -27,11 +30,16 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
-      - name: Install Android SDK
+      - name: Install Android SDK and NDK
         run: |
           sdkmanager "platform-tools"
           sdkmanager "platforms;android-35"
           sdkmanager "build-tools;35.0.0"
+          sdkmanager "ndk;${NDK_VERSION}"
+
+      - name: Set Android NDK
+        run: |
+          echo "ANDROID_NDK=${ANDROID_SDK_ROOT}/ndk/${NDK_VERSION}" >> $GITHUB_ENV
 
       - name: Install Gradle
         uses: gradle/actions/setup-gradle@v4
